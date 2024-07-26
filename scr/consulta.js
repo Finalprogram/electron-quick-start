@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const consultarCpf = async(cpf, dataNascimento) => {
     const url = 'https://servicos.receita.fazenda.gov.br/Servicos/CPF/ConsultaSituacao/ConsultaPublica.asp';
 
-    const browser = await puppeteer.launch({ headless: true }); // headless: aparece o navegador ou nao, em true não aparece.
+    const browser = await puppeteer.launch({ headless: false }); // headless: aparece o navegador ou nao, em true não aparece.
     const page = await browser.newPage();
 
     try {
