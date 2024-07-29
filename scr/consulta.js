@@ -12,6 +12,8 @@ const consultarCpf = async(cpf, dataNascimento) => {
         args: [
             '--disable-features=SameSiteByDefaultCookies,CookiesWithoutSameSiteMustBeSecure',
             '--disable-site-isolation-trials',
+            '--disable-web-security',
+            '--disable-blink-features=AutomationControlled',
         ],
         userDataDir: './user_data' // This will keep the session persistent
     });
@@ -29,6 +31,12 @@ const consultarCpf = async(cpf, dataNascimento) => {
         } else {
             request.continue();
         }
+    });
+
+    // Logging response headers for debugging
+    page.on('response', async(response) => {
+        console.log(`Response: ${response.url()} - ${response.status()}`);
+        console.log(`Headers: ${JSON.stringify(response.headers())}`);
     });
 
     page.on('error', err => {
@@ -50,7 +58,7 @@ const consultarCpf = async(cpf, dataNascimento) => {
         await page.type('#txtCPF', cpf);
         await page.type('#txtDataNascimento', dataNascimento);
 
-        // Resolve captcha using NoCaptchaAI
+        // Solve captcha using NoCaptchaAI
         await solveCaptcha(page, API_KEY, UID, "pro");
 
         // Add a small delay before submitting the form
